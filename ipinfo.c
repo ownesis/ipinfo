@@ -36,6 +36,8 @@
         (s)->k = json_object_get_##t(_tmp);                 \
     } while (0)
 
+#define API_ENDPOINT "https://ipapi.co/"
+#define API_ENDPOINT_TYPE "/json"
 
 struct Mem {
     char *ptr;
@@ -86,15 +88,40 @@ void ipinfo_free(struct IPInfo *info) {
     free(info);
 }
 
-int ipinfo_get(struct IPInfo **info) {
+int ipinfo_get(struct IPInfo **info, const char *ipaddr) {
     CURL *curl_handle;
     CURLcode res;
     struct Mem chunk;
     struct json_object *jobj;
     struct json_object *loc_obj;
-    _Bool test;
     long code = 0;
+    char *endpoint = NULL;
+    size_t ipaddr_len = 0;
 
+    if (ipaddr) {
+        ipaddr_len = strlen(ipaddr);
+    } else {
+        ipaddr_len = 0;
+        ipaddr = "";
+    }
+
+    endpoint = calloc(1, (sizeof(API_ENDPOINT)
+                    + sizeof(API_ENDPOINT_TYPE)
+                    + ipaddr_len
+                    + 1));
+
+    if (!endpoint)
+        return IPINFO_MEM_ERR;
+
+    if (!strcat(endpoint, API_ENDPOINT))
+        return IPINFO_MEM_ERR;
+
+    if (!strcat(endpoint, ipaddr))
+        return IPINFO_MEM_ERR;
+ 
+    if (!strcat(endpoint, API_ENDPOINT_TYPE))
+        return IPINFO_MEM_ERR;
+ 
     *info = calloc(1, sizeof(struct IPInfo));
     if (!(*info))
         return IPINFO_MEM_ERR;
@@ -118,6 +145,16 @@ int ipinfo_get(struct IPInfo **info) {
         return IPINFO_CURL_ERR;
     }
 
+    CURL_ERR(curl_easy_setopt(curl_handle, CURLOPT_URL, endpoint)) {
+        free(*info);
+        free(chunk.ptr);
+        curl_easy_cleanup(curl_handle);
+
+        return IPINFO_CURL_ERR;
+    }
+
+    free(endpoint);
+ 
     CURL_ERR(curl_easy_setopt(curl_handle, CURLOPT_USERAGENT, "ipinfo")) {
         free(*info);
         free(chunk.ptr);
@@ -125,14 +162,6 @@ int ipinfo_get(struct IPInfo **info) {
         return IPINFO_CURL_ERR;
     }
 
-    CURL_ERR(curl_easy_setopt(curl_handle, CURLOPT_URL, "https://ipapi.co/json")) {
-        free(*info);
-        free(chunk.ptr);
-        curl_easy_cleanup(curl_handle);
-
-        return IPINFO_CURL_ERR;
-    }
-    
     CURL_ERR(curl_easy_setopt(curl_handle, CURLOPT_WRITEFUNCTION, _write_callback)) {
         free(*info);
         free(chunk.ptr);

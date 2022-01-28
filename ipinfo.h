@@ -37,7 +37,7 @@ enum _E_IPInfo_ {
     IPINFO_CURL_ERR
 };
 
-int ipinfo_get(struct IPInfo **info);
+int ipinfo_get(struct IPInfo **info, const char *ipstr);
 void ipinfo_free(struct IPInfo *info);
 
 #endif /* __IP_INFO_H__ */
