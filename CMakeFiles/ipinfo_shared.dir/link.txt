@@ -1,0 +1,1 @@
+/sbin/cc -fPIC -shared -Wl,-soname,libipinfo_shared.so.0.1.0 -o libipinfo_shared.so.0.1.0 CMakeFiles/ipinfo_shared.dir/ipinfo.c.o  -lcurl 
