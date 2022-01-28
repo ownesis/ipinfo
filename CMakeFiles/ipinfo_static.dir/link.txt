@@ -1,2 +1,0 @@
-/sbin/ar qc libipinfo_static.a CMakeFiles/ipinfo_static.dir/ipinfo.c.o
-/sbin/ranlib libipinfo_static.a

@@ -1,8 +1,0 @@
-/home/ownesis/Documents/langage-c/ip_info/CMakeFiles/ipinfo_shared.dir
-/home/ownesis/Documents/langage-c/ip_info/CMakeFiles/ipinfo_static.dir
-/home/ownesis/Documents/langage-c/ip_info/CMakeFiles/edit_cache.dir
-/home/ownesis/Documents/langage-c/ip_info/CMakeFiles/rebuild_cache.dir
-/home/ownesis/Documents/langage-c/ip_info/CMakeFiles/list_install_components.dir
-/home/ownesis/Documents/langage-c/ip_info/CMakeFiles/install.dir
-/home/ownesis/Documents/langage-c/ip_info/CMakeFiles/install/local.dir
-/home/ownesis/Documents/langage-c/ip_info/CMakeFiles/install/strip.dir
