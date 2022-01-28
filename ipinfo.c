@@ -25,7 +25,7 @@
         }                                                   \
     } while (0)
 
-#define JSON_GET_OBJ(t, j, k, s)                            \
+#define JSON_GET_TYPE(t, j, k, s)                           \
     do {                                                    \
         json_object *_tmp = NULL;                           \
         if (!json_object_object_get_ex((j), #k, &_tmp)) {   \
@@ -237,13 +237,13 @@ int ipinfo_get(struct IPInfo **info, const char *ipaddr) {
     JSON_GET_STR(jobj, asn, *info);
     JSON_GET_STR(jobj, org, *info);
 
-    JSON_GET_OBJ(int64, jobj, country_population, *info);
+    JSON_GET_TYPE(int64, jobj, country_population, *info);
 
-    JSON_GET_OBJ(double, jobj, latitude, *info);
-    JSON_GET_OBJ(double, jobj, longitude, *info);
-    JSON_GET_OBJ(double, jobj, country_area, *info);
+    JSON_GET_TYPE(double, jobj, latitude, *info);
+    JSON_GET_TYPE(double, jobj, longitude, *info);
+    JSON_GET_TYPE(double, jobj, country_area, *info);
 
-    JSON_GET_OBJ(boolean, jobj, in_eu, *info);
+    JSON_GET_TYPE(boolean, jobj, in_eu, *info);
 
     json_object_put(jobj);
 
