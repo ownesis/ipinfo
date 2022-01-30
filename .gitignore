@@ -1,5 +1,6 @@
+*.so*
 *.o
 *.out
-*.so*
 *.a
 test*
+build/

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 
-project(libipinfo VERSION 0.1.0 DESCRIPTION "C library for https://ipapi.co")
+project(libipinfo VERSION 0.1.0 DESCRIPTION "C library for https://ipapi.co/")
 
 set(SRCS
     ipinfo.c
@@ -10,18 +10,17 @@ set(HDRS
     ipinfo.h
     )
 
-add_library(ipinfo_shared SHARED ${SRCS} ${HRDS})
-set_target_properties(ipinfo_shared PROPERTIES VERSION ${PROJECT_VERSION})
-set_target_properties(ipinfo_shared PROPERTIES SOVERSION ${PROJECT_VERSION})
+add_library(ipinfo SHARED ${SRCS} ${HRDS})
+set_target_properties(ipinfo PROPERTIES VERSION ${PROJECT_VERSION})
+set_target_properties(ipinfo PROPERTIES SOVERSION ${PROJECT_VERSION})
 
 add_library(ipinfo_static STATIC ${SRCS} ${HRDS})
 set_target_properties(ipinfo_static PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(ipinfo_static PROPERTIES SOVERSION ${PROJECT_VERSION})
 
-
 include(GNUInstallDirs)
 
-install(TARGETS ipinfo_shared
+install(TARGETS ipinfo
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
@@ -29,30 +28,21 @@ install(TARGETS ipinfo_static
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
+install(FILES "ipinfo.h" DESTINATION "include/")
 
-find_package(CURL)
-find_package(JSON-C)
+find_package(CURL REQUIRED)
+find_package(JSON-C CONFIG REQUIRED)
 
 if(CURL_FOUND)
-  # Une fois la dépendance trouvée, nous l'incluons au projet
-  target_include_directories(ipinfo_shared PUBLIC ${CURL_INCLUDE_DIR})
-  target_link_libraries(ipinfo_shared ${CURL_LIBRARY})
-
-  target_include_directories(ipinfo_static PUBLIC ${CURL_INCLUDE_DIR})
-  target_link_libraries(ipinfo_static ${CURL_LIBRARY})
+    include_directories(${CURL_INCLUDE_DIR})
+    target_link_libraries(ipinfo PRIVATE ${CURL_LIBRARY})
+    target_link_libraries(ipinfo_static PRIVATE ${CURL_LIBRARY})
 else()
-  # Sinon, nous affichons un message
-  message(FATAL_ERROR "libcurl not found")
+    message(FATAL_ERROR "libcurl not found")
 endif()
-
 if(JSON-C_FOUND)
-  # Une fois la dépendance trouvée, nous l'incluons au projet
-  target_include_directories(ipinfo_shared PUBLIC ${JSON-C_INCLUDE_DIR})
-  target_link_libraries(ipinfo_shared ${JSON-C_LIBRARY})
-
-  target_include_directories(ipinfo_static PUBLIC ${JSON-C_INCLUDE_DIR})
-  target_link_libraries(ipinfo_static ${JSON-C_LIBRARY})
+    target_link_libraries(ipinfo PRIVATE json-c::json-c)
+    target_link_libraries(ipinfo_static PRIVATE json-c::json-c)
 else()
-  # Sinon, nous affichons un message
-  message(FATAL_ERROR "libjson-c not found")
+    message(FATAL_ERROR "json-c not found")
 endif()

@@ -34,7 +34,8 @@ enum _E_IPInfo_ {
     IPINFO_OK = 0,
     IPINFO_MEM_ERR,
     IPINFO_JSON_ERR,
-    IPINFO_CURL_ERR
+    IPINFO_CURL_ERR,
+    IPINFO_ENDPOINT_ERR
 };
 
 int ipinfo_get(struct IPInfo **info, const char *ipstr);

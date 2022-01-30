@@ -200,7 +200,7 @@ int ipinfo_get(struct IPInfo **info, const char *ipaddr) {
         free(*info);
         free(chunk.ptr);
 
-        return IPINFO_CURL_ERR;
+        return IPINFO_ENDPOINT_ERR;
     }
 
     chunk.ptr[chunk.size] = 0;
