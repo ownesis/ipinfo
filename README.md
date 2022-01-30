@@ -12,7 +12,7 @@ sudo ldconfig /usr/local/lib
 ```
 
 # Documentation
-First, you need to initialize a NULL `struct IPInfo` context.
+First, you need to initialize a NULL `struct IPInfo` pointer context.
 
 `struct IPInfo` is:
 ```c
