@@ -215,6 +215,14 @@ int ipinfo_get(struct IPInfo **info, const char *ipaddr) {
         return IPINFO_JSON_ERR;
     }
 
+    if (json_object_object_get_ex(jobj, "error", NULL)) {
+        puts("error");
+        free(*info);
+        json_object_put(jobj);
+
+        return IPINFO_IP_ERR;
+    }
+
     JSON_GET_STR(jobj, ip, *info);
     JSON_GET_STR(jobj, version, *info);
     JSON_GET_STR(jobj, city, *info);

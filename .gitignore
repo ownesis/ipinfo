@@ -2,5 +2,5 @@
 *.o
 *.out
 *.a
-test*
+test*.c
 build/

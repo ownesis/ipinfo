@@ -63,6 +63,7 @@ The function return `IPINFO_OK` if no error, else:
 - `IPINFO_JSON_ERR`: If an error occured when parsing json result of the api endpoit.
 - `IPINFO_CURL_ERR`: If an error occured with curl api.
 - `IPINFO_ENDPOINT_ERR`: If the api endpoint `ipapi.co` return response code different to `200`.
+- `IPINFO_IP_ERR`: If the given IP address is invalid.
 
 After using data, you must to free the context with `ipinfo_free`:
 ```c
